@@ -3,34 +3,37 @@
 
 import { Auction, PagedResult } from "@/types";
 import { getTokenWorkaround } from "./authActions";
+import { fetchWrapper } from "@/lib/fetchWrapper";
+import { FieldValues } from "react-hook-form";
+import { revalidatePath } from "next/cache";
 
 // from node js erver to api, come back in server side, render and return to client html
 export async function getData(query: string): Promise<PagedResult<Auction>> {
-    // fetch also cache data
-    const res = await fetch(`http://localhost:6001/search${query}`);
-
-    if (!res.ok) throw new Error('Failed to fetch data');
-
-    return res.json();
+   return await fetchWrapper.get(`search${query}`);
 }
 
-export async function UpdateAuctionTest() {
+export async function updateAuctionTest() {
     const data = {
         mileage: Math.floor(Math.random() * 100000) + 1 // random from 1 - 100_000
     }
 
-    const token = await getTokenWorkaround();
+    return await fetchWrapper.put('auctions/bbab4d5a-8565-48b1-9450-5ac2a5c4a654', data);
+}
 
-    const res = await fetch('http://localhost:6001/auctions/bbab4d5a-8565-48b1-9450-5ac2a5c4a654', {
-        method: 'PUT',
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': 'Bearer ' + token?.acess_token
-        },
-        body: JSON.stringify(data)
-    })
+export async function createAuction(data: FieldValues) {
+    return await fetchWrapper.post('auctions', data);
+}
 
-    if (!res.ok) return {status: res.status, message: res.statusText}
+export async function getDetailedViewData(id: string): Promise<Auction> {
+    return await fetchWrapper.get(`auctions/${id}`);
+}
 
-    return res.statusText;
+export async function updateAuction(data: FieldValues, id: string) {
+    const res = await fetchWrapper.put(`auctions/${id}`, data);
+    revalidatePath(`/auctions/${id}`);
+    return res;
+}
+
+export async function deleteAuction(id: string) {
+    return await fetchWrapper.del(`auctions/${id}`);
 }
