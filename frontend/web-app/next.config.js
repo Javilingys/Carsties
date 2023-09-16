@@ -17,7 +17,8 @@ const nextConfig = {
             'sun9-60.userapi.com',
             'sun1-21.userapi.com',
         ]
-    }
+    },
+    output: 'standalone'
 }
 
 module.exports = nextConfig
