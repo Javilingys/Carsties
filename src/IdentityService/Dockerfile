@@ -17,6 +17,8 @@ COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
 COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityService.csproj
 COPY src/BiddingService/BiddingService.csproj src/BiddingService/BiddingService.csproj
 COPY src/NotificationService/NotificationService.csproj src/NotificationService/NotificationService.csproj
+COPY tests/AuctionService.UnitTests/AuctionService.UnitTests.csproj tests/AuctionService.UnitTests/AuctionService.UnitTests.csproj
+COPY tests/AuctionService.UnitTests/AuctionService.IntegrationTests.csproj tests/AuctionService.UnitTests/AuctionService.IntegrationTests.csproj
 
 # Restore package deps
 # because we inside context of dotnet/sdk:7.0 so we have access to dotnet cli
